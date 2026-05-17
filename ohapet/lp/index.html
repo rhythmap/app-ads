@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おはようペット - 朝が楽しみになる、不思議なアラーム</title>
+    <meta name="description" content="起きるのが苦手なあなたへ。スマホの中のペットと一緒に、新しい朝の習慣を始めませんか？睡眠記録、ペット育成、性格診断が楽しめる新しいライフスタイルアプリ。">
+    <meta name="keywords" content="おはようペット,アラーム,睡眠記録,ペット育成,MBTI,性格診断,習慣化">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #FFAB91;
+            --primary-light: #FFCCBC;
+            --secondary: #FFFDF5;
+            --accent: #81D4FA;
+            --text-main: #5D4037;
+            --text-light: #8D6E63;
+            --bg-gradient: linear-gradient(135deg, #FFFDF5 0%, #FFF3E0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --shadow-soft: 0 10px 30px rgba(255, 171, 145, 0.15);
+            --shadow-hover: 0 15px 40px rgba(255, 171, 145, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            color: var(--text-main);
+            background: var(--bg-gradient);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 共通ユーティリティ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .text-center { text-align: center; }
+        .mt-4 { margin-top: 2rem; }
+        .mb-2 { margin-bottom: 1rem; }
+
+        /* ナビゲーションバー */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Nunito', 'M PLUS Rounded 1c', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: #FFD54F;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 背景の装飾円 */
+        .hero::before, .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        .hero::before {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #FFE0B2 0%, rgba(255,224,178,0) 70%);
+            top: -100px;
+            right: -100px;
+        }
+        .hero::after {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #B3E5FC 0%, rgba(179,229,252,0) 70%);
+            bottom: 10%;
+            left: -100px;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .hero-text {
+            flex: 1;
+            animation: fadeUp 1s ease-out;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #FF7043, #FFCA28);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 30px;
+            box-shadow: var(--shadow-hover);
+            border: 8px solid white;
+        }
+
+        /* ダウンロードボタン */
+        .store-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .store-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .store-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .store-btn i {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .store-btn.google-play {
+            background: #01875F;
+        }
+
+        /* 特徴セクション */
+        .features {
+            padding: 100px 0;
+            background: white;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 60px;
+            font-weight: 800;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: var(--secondary);
+            padding: 40px 30px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        .feature-card:nth-child(2) .feature-icon { background: #B3E5FC; }
+        .feature-card:nth-child(3) .feature-icon { background: #FFE082; }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* 遊び方セクション */
+        .how-to {
+            padding: 100px 0;
+            background: var(--bg-gradient);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: var(--primary-light);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            background: inherit;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            right: -12px;
+            background: white;
+            border: 4px solid var(--primary);
+            top: 32px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -12px;
+        }
+
+        .timeline-content {
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .timeline-content h4 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline-content h4 i {
+            font-size: 1.5rem;
+            padding: 8px;
+            border-radius: 50%;
+            background: #f5f5f5;
+        }
+
+        /* タイムラインごとのテーマカラー */
+        .timeline-item:nth-child(1) .timeline-content { border-top: 5px solid #7986CB; }
+        .timeline-item:nth-child(1) .timeline-content h4 i { color: #7986CB; background: #E8EAF6; }
+        
+        .timeline-item:nth-child(2) .timeline-content { border-top: 5px solid #FF9800; }
+        .timeline-item:nth-child(2) .timeline-content h4 i { color: #FF9800; background: #FFF3E0; }
+        
+        .timeline-item:nth-child(3) .timeline-content { border-top: 5px solid #8D6E63; }
+        .timeline-item:nth-child(3) .timeline-content h4 i { color: #8D6E63; background: #EFEBE9; }
+        
+        .timeline-item:nth-child(4) .timeline-content { border-top: 5px solid #EC407A; }
+        .timeline-item:nth-child(4) .timeline-content h4 i { color: #EC407A; background: #FCE4EC; }
+
+        /* CTAボトム */
+        .bottom-cta {
+            padding: 80px 0;
+            background: var(--primary);
+            text-align: center;
+            color: white;
+        }
+
+        .bottom-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .bottom-cta .store-btn {
+            background: white;
+            color: var(--primary);
+        }
+        .bottom-cta .store-btn:hover {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        /* フッター */
+        footer {
+            background: #fff;
+            padding: 40px 0 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-links {
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 700;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* アニメーション */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 100px 0 60px;
+            }
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .store-buttons {
+                justify-content: center;
+            }
+            .hero-image {
+                margin-top: 40px;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 0;
+            }
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            .timeline-item::after, .timeline-item:nth-child(even)::after {
+                left: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-sun"></i> おはようペット
+            </a>
+            <div class="store-buttons" style="gap: 10px;">
+                <a href="#download" class="store-btn" style="padding: 8px 16px; font-size: 0.9rem;">
+                    <i class="fa-brands fa-apple"></i> iOS
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ファーストビュー -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">朝が楽しみになる、<br>不思議なアラーム。</h1>
+                <p class="hero-subtitle">
+                    起きるのが苦手なあなたへ。<br>
+                    スマホの中の可愛いペットと一緒に、<br>新しい朝の習慣を始めませんか？
+                </p>
+                <div class="store-buttons" id="download">
+                    <a href="https://apps.apple.com/jp/app/id6768862371" target="_blank" rel="noopener noreferrer" class="store-btn">
+                        <i class="fa-brands fa-apple"></i> App Store
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.rhythmap.ohapet" target="_blank" rel="noopener noreferrer" class="store-btn google-play">
+                        <i class="fa-brands fa-google-play"></i> Google Play
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- 自動保存した画像へのパス -->
+                <img src="images/main-visual.jpg" alt="おはようペットのキャラクターたち">
+            </div>
+        </div>
+    </section>
+
+    <!-- 特徴セクション -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">アプリの特徴</h2>
+            <div class="feature-grid">
+                <!-- 特徴1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-bed"></i>
+                    </div>
+                    <h3>起きるだけでお世話完了</h3>
+                    <p>夜はアラームをセットして、お部屋の電気を消して眠るだけ。朝はカーテンを開けて起きます。毎日規則正しく起きることが、ペットへの最高のお世話になります。</p>
+                </div>
+                <!-- 特徴2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-egg"></i>
+                    </div>
+                    <h3>生活に合わせて進化する</h3>
+                    <p>あなたの生活習慣によって、ペットは天使にも悪魔にも進化します！多彩なキャラクターと図鑑コンプリートを目指して、楽しく早起きを続けましょう。</p>
+                </div>
+                <!-- 特徴3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <h3>飼い主の性格診断</h3>
+                    <p>ペットが天寿を全うすると、あなたの睡眠リズムやペットとの接し方から隠れた性格や相性が判明！友達と結果をシェアして楽しむことができます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 遊び方セクション -->
+    <section class="how-to">
+        <div class="container">
+            <h2 class="section-title">毎日の過ごし方</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4><i class="fa-solid fa-moon"></i> アラームをセットして消灯</h4>
+                        <p>寝る前にアラームをセットして、お部屋の電気を消しましょう。ペットも一緒に静かに眠りにつきます。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4><i class="fa-solid fa-sun"></i> 朝はカーテンを開けて</h4>
+                        <p>アラームが鳴ったら、カーテンを開けましょう。ペットに朝日を浴びせて、気持ちのいい朝をスタート！</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4><i class="fa-solid fa-poop"></i> うんちのお掃除も</h4>
+                        <p>ペットは生きています。定期的にお部屋を綺麗にしてあげないと、最悪の姿に進化してしまうかも...？</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h4><i class="fa-solid fa-bone"></i> おやつとふれあい</h4>
+                        <p>お腹を満たすためにおやつをあげたり、おもちゃで一緒に遊んであげましょう。愛情を注ぐほど懐いて可愛い姿を見せてくれます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTAセクション -->
+    <section class="bottom-cta">
+        <div class="container">
+            <h2>さあ、あなただけのペットに出会おう。</h2>
+            <p class="mb-2">基本プレイ無料・今すぐダウンロード</p>
+            <div class="store-buttons" style="justify-content: center; margin-top: 30px;">
+                <a href="https://apps.apple.com/jp/app/id6768862371" target="_blank" rel="noopener noreferrer" class="store-btn">
+                    <i class="fa-brands fa-apple"></i> App Storeから
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.rhythmap.ohapet" target="_blank" rel="noopener noreferrer" class="store-btn google-play">
+                    <i class="fa-brands fa-google-play"></i> Google Playから
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="../legal/privacy.html" target="_blank">プライバシーポリシー</a>
+            </div>
+            <p class="copyright">&copy; 2026 Rhythmap. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
