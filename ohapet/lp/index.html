@@ -472,7 +472,96 @@
             .timeline-item::after, .timeline-item:nth-child(even)::after {
                 left: 19px;
             }
+            
+            /* 新ギャラリー用スマホ調整 */
+            .gallery-track {
+                gap: 15px;
+                padding: 20px;
+            }
+            .gallery-img {
+                width: 180px;
+            }
         }
+        
+        /* アプリ画面モックアップ風スタイル */
+        .app-mockup {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 4px solid #fff;
+            transition: transform 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .feature-card:hover .app-mockup {
+            transform: scale(1.03) translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255,171,145,0.3);
+        }
+        
+        /* ギャラリーセクション */
+        .gallery-section {
+            padding: 80px 0;
+            background: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-container {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE */
+        }
+        
+        .gallery-container::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+        
+        .gallery-track {
+            display: flex;
+            gap: 30px;
+            padding: 40px;
+            width: max-content;
+            animation: scrollGallery 40s linear infinite;
+        }
+        
+        .gallery-track:hover {
+            animation-play-state: paused;
+        }
+        
+        .gallery-img {
+            width: 250px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border: 6px solid #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-img:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+        
+        @keyframes scrollGallery {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-250px * 7 - 30px * 7)); } /* 画像幅とギャップの合計分 */
+        }
+        
+        /* スクロール連動アニメーションクラス */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
     </style>
 </head>
 <body>
@@ -522,28 +611,31 @@
             <h2 class="section-title">アプリの特徴</h2>
             <div class="feature-grid">
                 <!-- 特徴1 -->
-                <div class="feature-card">
+                <div class="feature-card animate-on-scroll delay-1">
                     <div class="feature-icon">
                         <i class="fa-solid fa-bed"></i>
                     </div>
                     <h3>起きるだけでお世話完了</h3>
                     <p>夜はアラームをセットして、お部屋の電気を消して眠るだけ。朝はカーテンを開けて起きます。毎日規則正しく起きることが、ペットへの最高のお世話になります。</p>
+                    <img src="images/6_alarm.png" alt="アラーム設定画面" class="app-mockup">
                 </div>
                 <!-- 特徴2 -->
-                <div class="feature-card">
+                <div class="feature-card animate-on-scroll delay-2">
                     <div class="feature-icon">
                         <i class="fa-solid fa-egg"></i>
                     </div>
                     <h3>生活に合わせて進化する</h3>
                     <p>あなたの生活習慣によって、ペットは天使にも悪魔にも進化します！多彩なキャラクターと図鑑コンプリートを目指して、楽しく早起きを続けましょう。</p>
+                    <img src="images/2_evolution.png" alt="進化の瞬間" class="app-mockup">
                 </div>
                 <!-- 特徴3 -->
-                <div class="feature-card">
+                <div class="feature-card animate-on-scroll delay-3">
                     <div class="feature-icon">
                         <i class="fa-solid fa-heart"></i>
                     </div>
                     <h3>飼い主の性格診断</h3>
                     <p>ペットが天寿を全うすると、あなたの睡眠リズムやペットとの接し方から隠れた性格や相性が判明！友達と結果をシェアして楽しむことができます。</p>
+                    <img src="images/4_mbti.png" alt="飼い主診断結果画面" class="app-mockup">
                 </div>
             </div>
         </div>
@@ -582,8 +674,35 @@
         </div>
     </section>
 
+    <!-- ギャラリーセクション -->
+    <section class="gallery-section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">アプリ画面ギャラリー</h2>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-track">
+                <img src="images/1_hook.png" alt="フック画面" class="gallery-img">
+                <img src="images/2_evolution.png" alt="進化画面" class="gallery-img">
+                <img src="images/3_care.png" alt="ケア画面" class="gallery-img">
+                <img src="images/4_mbti.png" alt="性格診断画面" class="gallery-img">
+                <img src="images/5_items.png" alt="アイテム画面" class="gallery-img">
+                <img src="images/6_widget.png" alt="ウィジェット画面" class="gallery-img">
+                <img src="images/7_alarm.png" alt="アラーム画面" class="gallery-img">
+                
+                <!-- 無限スクロール用ループ複製 -->
+                <img src="images/1_hook.png" alt="フック画面" class="gallery-img">
+                <img src="images/2_evolution.png" alt="進化画面" class="gallery-img">
+                <img src="images/3_care.png" alt="ケア画面" class="gallery-img">
+                <img src="images/4_mbti.png" alt="性格診断画面" class="gallery-img">
+                <img src="images/5_items.png" alt="アイテム画面" class="gallery-img">
+                <img src="images/6_widget.png" alt="ウィジェット画面" class="gallery-img">
+                <img src="images/7_alarm.png" alt="アラーム画面" class="gallery-img">
+            </div>
+        </div>
+    </section>
+
     <!-- CTAセクション -->
-    <section class="bottom-cta">
+    <section class="bottom-cta animate-on-scroll">
         <div class="container">
             <h2>さあ、あなただけのペットに出会おう。</h2>
             <p class="mb-2">基本プレイ無料・今すぐダウンロード</p>
@@ -609,5 +728,36 @@
         </div>
     </footer>
 
+    <script>
+        // スクロールアニメーションの監視
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+            
+            // How-toセクションのアイテムにも順次アニメーションを適用
+            const howToItems = document.querySelectorAll('.timeline-item');
+            howToItems.forEach((item, index) => {
+                item.classList.add('animate-on-scroll');
+                item.classList.add('delay-' + ((index % 3) + 1));
+                observer.observe(item);
+            });
+        });
+    </script>
 </body>
 </html>
