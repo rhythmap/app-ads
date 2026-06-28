@@ -9,6 +9,8 @@
   <meta property="og:title" content="CotzCotz（コツコツ）— コツコツ続けて、自分を積み上げる。">
   <meta property="og:description" content="続けるのは、むずかしい。だから CotzCotz（コツコツ）。可愛く・楽しく・手応え・応援で続く、見守り習慣アプリ。">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://www.rhythmap.net/cotzcotz/lp/images/feature_graphic.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -48,15 +50,25 @@
     /* brand reading + value */
     .brandread{display:inline-flex;align-items:center;gap:8px;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:.95rem;color:#fff;background:linear-gradient(135deg,var(--coral),var(--pink));padding:7px 16px;border-radius:30px;box-shadow:0 8px 18px rgba(255,143,163,.4);margin-bottom:16px}
     .brandread b{font-size:1.05rem;letter-spacing:.04em}
-    .valueband{padding:46px 0 6px;text-align:center}
-    .valueband .kicker{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:1.55rem;color:var(--ink);margin-bottom:26px;line-height:1.55}
-    .valueband .kicker span{color:var(--coral)}
-    .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:940px;margin:0 auto}
-    .vitem{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 10px 24px rgba(120,110,100,.13);text-align:left}
-    .vitem .vn{display:inline-block;font-weight:800;color:var(--coral);font-size:.78rem;margin-bottom:8px;letter-spacing:.08em}
-    .vitem .vt{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:1.04rem;margin-bottom:5px;line-height:1.45}
-    .vitem .vd{color:#6b665f;font-size:.9rem}
-    @media(max-width:720px){.valueband .kicker{font-size:1.22rem}}
+    /* feature showcase: alternating screenshot + text rows */
+    .show{display:flex;flex-direction:column;gap:66px;margin-top:34px}
+    .show-row{display:grid;grid-template-columns:300px 1fr;gap:54px;align-items:center}
+    .show-row.alt{grid-template-columns:1fr 300px}
+    .show-row.alt .show-shot{order:2}
+    .show-row.alt .show-text{order:1}
+    .show-shot{display:flex;justify-content:center}
+    .show-shot img{width:300px;border-radius:36px;box-shadow:0 26px 60px rgba(120,110,100,.26);border:1px solid rgba(255,255,255,.6);transition:transform .3s ease}
+    .show-shot img:hover{transform:translateY(-8px) scale(1.02)}
+    .show-text{max-width:460px}
+    .show-text .ic{width:58px;height:58px;border-radius:17px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;margin-bottom:18px;box-shadow:0 10px 22px rgba(120,110,100,.18)}
+    .show-text h3{font-family:'M PLUS Rounded 1c',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:12px;line-height:1.4}
+    .show-text p{color:#6b665f;font-size:1.02rem;line-height:1.95}
+    @media(max-width:760px){
+      .show{gap:48px}
+      .show-row,.show-row.alt{grid-template-columns:1fr;gap:22px;justify-items:center;text-align:center}
+      .show-row.alt .show-shot{order:1}.show-row.alt .show-text{order:2}
+      .show-text{max-width:440px}.show-text .ic{margin-left:auto;margin-right:auto}
+    }
 
     /* park scene */
     .scene{margin-top:18px}
@@ -65,11 +77,6 @@
     .section{padding:56px 0}
     .section h2{font-family:'M PLUS Rounded 1c',sans-serif;text-align:center;font-size:2rem;font-weight:800;margin-bottom:8px}
     .section .lead{text-align:center;color:var(--sub);max-width:640px;margin:0 auto 38px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
-    .card{background:#fff;border-radius:24px;padding:26px;box-shadow:0 12px 28px rgba(120,110,100,.14);position:relative;overflow:hidden}
-    .card .ic{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;margin-bottom:14px}
-    .card h3{font-family:'M PLUS Rounded 1c',sans-serif;font-size:1.18rem;font-weight:800;margin-bottom:6px}
-    .card p{color:#6b665f;font-size:.97rem}
     .b1{background:var(--coral)}.b2{background:var(--blue)}.b3{background:var(--mint)}.b4{background:var(--pink)}.b5{background:var(--mustard);color:#7a5b12!important}.b6{background:var(--grape)}
 
     .collection{text-align:center}
@@ -213,29 +220,66 @@
       </div>
     </section>
 
-    <section class="valueband">
-      <div class="container">
-        <p class="kicker">続けるのは、むずかしい。<br>だから——<span>可愛く・楽しく・手応え・応援</span>で、続く。</p>
-        <div class="vgrid">
-          <div class="vitem"><span class="vn">01</span><div class="vt">コツコツ続けて、自分を積み上げる。</div><div class="vd">毎日1ブロック。続けるほどカードがレアに進化。</div></div>
-          <div class="vitem"><span class="vn">02</span><div class="vt">続けるほど、自分だけの遊園地が育つ。</div><div class="vd">コツコツが、ワクワクするごほうびの世界に。</div></div>
-          <div class="vitem"><span class="vn">03</span><div class="vt">がんばりを、ともだちや家族が見守って応援。</div><div class="vd">確認スタンプとひとことで、もっと続く。</div></div>
-          <div class="vitem"><span class="vn">04</span><div class="vt">自分だけのCotzを、すきに着せ替え。</div><div class="vd">色・かお・かざりを集めて、もっと好きに。</div></div>
-        </div>
-      </div>
-    </section>
-
     <section id="features" class="section">
       <div class="container">
         <h2>毎日が、ちいさな達成の積み重ねに。</h2>
         <p class="lead">むずかしい設定はなし。今日の「コツ」をタップで記録するだけ。家族で見守りながら、たのしく続けられます。</p>
-        <div class="grid">
-          <div class="card"><div class="ic b1"><i class="fa-solid fa-stamp"></i></div><h3>毎日の記録（コツ）</h3><p>長押しで今日のCotzを記録。連続日数や1週間の歩みがひと目で分かり、続ける励みになります。</p></div>
-          <div class="card"><div class="ic b2"><i class="fa-solid fa-hands-holding-child"></i></div><h3>見守りと確認</h3><p>おうちの人など「見守る人」が、確認スタンプとひとことで応援。離れていても、がんばりが伝わります。</p></div>
-          <div class="card"><div class="ic b3"><i class="fa-solid fa-tree-city"></i></div><h3>コツコツ遊園地</h3><p>達成を積み上げると、観覧車やお城が増える自分だけの世界が育ちます。達成カードはコレクションに。</p></div>
-          <div class="card"><div class="ic b4"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h3>自分だけのCotz</h3><p>色・顔・あたまを選んでアバターに。帽子やメガネ、リボンなどの「おしゃれ」で着せ替えも。</p></div>
-          <div class="card"><div class="ic b5"><i class="fa-solid fa-table-cells-large"></i></div><h3>ホーム画面ウィジェット</h3><p>「今日のCotz」と「確認待ち」をホーム画面でチェック。アプリを開かなくても続きが見える、<strong>iPhone・Android 両対応</strong>のウィジェット。</p></div>
-          <div class="card"><div class="ic b6"><i class="fa-solid fa-cloud"></i></div><h3>家族とつながる</h3><p>端末をまたいだ同期と、やさしいリマインダー。親子それぞれの端末から、同じ歩みを応援できます。</p></div>
+        <div class="show">
+
+          <div class="show-row">
+            <div class="show-shot"><img src="images/2_home.png" alt="ホーム・目標カードの画面"></div>
+            <div class="show-text">
+              <div class="ic b1"><i class="fa-solid fa-stamp"></i></div>
+              <h3>毎日の記録（コツ）</h3>
+              <p>長押しで今日のCotzを記録。連続日数や1週間の歩みがひと目で分かり、続ける励みになります。</p>
+            </div>
+          </div>
+
+          <div class="show-row alt">
+            <div class="show-shot"><img src="images/4_watch.png" alt="見守り・確認の画面"></div>
+            <div class="show-text">
+              <div class="ic b2"><i class="fa-solid fa-hands-holding-child"></i></div>
+              <h3>見守りと確認</h3>
+              <p>おうちの人など「見守る人」が、確認スタンプとひとことで応援。離れていても、がんばりが伝わります。</p>
+            </div>
+          </div>
+
+          <div class="show-row">
+            <div class="show-shot"><img src="images/3_park.png" alt="コツコツ遊園地の画面"></div>
+            <div class="show-text">
+              <div class="ic b3"><i class="fa-solid fa-tree-city"></i></div>
+              <h3>コツコツ遊園地</h3>
+              <p>達成を積み上げると、観覧車やお城が増える自分だけの世界が育ちます。達成カードはコレクションに。</p>
+            </div>
+          </div>
+
+          <div class="show-row alt">
+            <div class="show-shot"><img src="images/5_dress.png" alt="Cotzのきせかえ画面"></div>
+            <div class="show-text">
+              <div class="ic b4"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              <h3>自分だけのCotz</h3>
+              <p>色・顔・あたまを選んでアバターに。帽子やメガネ、リボンなどの「おしゃれ」で着せ替えも。</p>
+            </div>
+          </div>
+
+          <div class="show-row">
+            <div class="show-shot"><img src="images/6_widget.png" alt="ホーム画面ウィジェット"></div>
+            <div class="show-text">
+              <div class="ic b5"><i class="fa-solid fa-table-cells-large"></i></div>
+              <h3>ホーム画面ウィジェット</h3>
+              <p>「今日のCotz」と「確認待ち」をホーム画面でチェック。アプリを開かなくても続きが見える、<strong>iPhone・Android 両対応</strong>のウィジェット。</p>
+            </div>
+          </div>
+
+          <div class="show-row alt">
+            <div class="show-shot"><img src="images/1_hook.png" alt="オンボーディング画面"></div>
+            <div class="show-text">
+              <div class="ic b6"><i class="fa-solid fa-cloud"></i></div>
+              <h3>家族とつながる</h3>
+              <p>端末をまたいだ同期と、やさしいリマインダー。親子それぞれの端末から、同じ歩みを応援できます。</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
