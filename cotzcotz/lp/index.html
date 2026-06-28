@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CotzCotz（コツコツ） — コツコツ、わたしを積み上げる</title>
-  <meta name="description" content="CotzCotz（コツコツ）は、子どもと家族のための習慣づくりアプリ。毎日の小さな積み上げ（コツ）を記録し、見守る人が確認スタンプで応援。続けるほど、自分だけのCotzと『コツコツ遊園地』が育ちます。">
-  <meta name="keywords" content="CotzCotz, コツコツ, 習慣, 子ども, 親子, 習慣化, 記録, RHYTHMAP">
-  <meta property="og:title" content="CotzCotz（コツコツ）">
-  <meta property="og:description" content="コツコツ、わたしを積み上げる。子どもと家族のための習慣づくりアプリ。">
+  <meta name="description" content="続けるのは、むずかしい。だから CotzCotz（コツコツ）。毎日の小さな積み上げが目に見えて、家族や友だちが見守って応援。続けるほど自分だけの遊園地とCotzが育つ、見守り習慣アプリ。">
+  <meta name="keywords" content="CotzCotz, コツコツ, 習慣, 習慣化, 目標, 続ける, 子ども, 親子, 見守り, ごほうび, トラッカー, RHYTHMAP">
+  <meta property="og:title" content="CotzCotz（コツコツ）— コツコツ続けて、自分を積み上げる。">
+  <meta property="og:description" content="続けるのは、むずかしい。だから CotzCotz（コツコツ）。可愛く・楽しく・手応え・応援で続く、見守り習慣アプリ。">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +44,19 @@
     .cta:hover{transform:translateY(-2px) scale(1.02)}
     .cta.ghost{color:var(--ink);background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.08)}
     @media(max-width:720px){.hero h1{font-size:2.1rem}}
+
+    /* brand reading + value */
+    .brandread{display:inline-flex;align-items:center;gap:8px;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:.95rem;color:#fff;background:linear-gradient(135deg,var(--coral),var(--pink));padding:7px 16px;border-radius:30px;box-shadow:0 8px 18px rgba(255,143,163,.4);margin-bottom:16px}
+    .brandread b{font-size:1.05rem;letter-spacing:.04em}
+    .valueband{padding:46px 0 6px;text-align:center}
+    .valueband .kicker{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:1.55rem;color:var(--ink);margin-bottom:26px;line-height:1.55}
+    .valueband .kicker span{color:var(--coral)}
+    .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:940px;margin:0 auto}
+    .vitem{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 10px 24px rgba(120,110,100,.13);text-align:left}
+    .vitem .vn{display:inline-block;font-weight:800;color:var(--coral);font-size:.78rem;margin-bottom:8px;letter-spacing:.08em}
+    .vitem .vt{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:1.04rem;margin-bottom:5px;line-height:1.45}
+    .vitem .vd{color:#6b665f;font-size:.9rem}
+    @media(max-width:720px){.valueband .kicker{font-size:1.22rem}}
 
     /* park scene */
     .scene{margin-top:18px}
@@ -135,8 +148,9 @@
   <main>
     <section class="hero">
       <div class="container">
+        <div class="brandread"><svg viewBox="0 0 100 100" style="width:22px;height:22px"><use href="#cotz" style="color:#fff"/></svg>CotzCotz <b>＝ コツコツ</b></div>
         <h1 class="round">コツコツ、<br><span class="c1">わたし</span>を<span class="c2">つ</span><span class="c3">み</span><span class="c4">上げる。</span></h1>
-        <p>子どもと家族のための、たのしい習慣づくり。毎日の小さな「コツ」を記録して、見守る人がスタンプで応援。続けるほど、自分だけのCotzと「コツコツ遊園地」が育ちます。</p>
+        <p>「コツコツ続ける」は、ほんとは むずかしい。だから <strong>CotzCotz（コツコツ）</strong>。毎日の小さな積み上げが<strong>目に見えて</strong>、家族や友だちが<strong>見守って応援</strong>してくれるから、可愛く・楽しく続けられる習慣アプリ。</p>
         <div class="cta-row">
           <a href="#" class="cta"><i class="fa-brands fa-apple"></i> App Store（準備中）</a>
           <a href="#features" class="cta ghost">特長を見る</a>
@@ -195,6 +209,18 @@
           <use href="#cotz" x="770" y="206" width="70" height="70" style="color:#4EA8DE"/>
           <use href="#cotz" x="300" y="212" width="60" height="60" style="color:#9B5DE5"/>
         </svg>
+      </div>
+    </section>
+
+    <section class="valueband">
+      <div class="container">
+        <p class="kicker">続けるのは、むずかしい。<br>だから——<span>可愛く・楽しく・手応え・応援</span>で、続く。</p>
+        <div class="vgrid">
+          <div class="vitem"><span class="vn">01</span><div class="vt">コツコツ続けて、自分を積み上げる。</div><div class="vd">毎日1ブロック。続けるほどカードがレアに進化。</div></div>
+          <div class="vitem"><span class="vn">02</span><div class="vt">続けるほど、自分だけの遊園地が育つ。</div><div class="vd">コツコツが、ワクワクするごほうびの世界に。</div></div>
+          <div class="vitem"><span class="vn">03</span><div class="vt">がんばりを、ともだちや家族が見守って応援。</div><div class="vd">確認スタンプとひとことで、もっと続く。</div></div>
+          <div class="vitem"><span class="vn">04</span><div class="vt">自分だけのCotzを、すきに着せ替え。</div><div class="vd">色・かお・かざりを集めて、もっと好きに。</div></div>
+        </div>
       </div>
     </section>
 
