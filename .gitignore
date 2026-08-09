@@ -1,1 +1,7 @@
 **/.DS_Store
+
+# OGP画像の生成ツール（手元専用）
+ogp_maker*.html
+cotz_bg.jpg
+cotz_hill.png
+cotz_tree.png
