@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    検索よけ。特商法で氏名の掲載が要るが、検索結果に個人名が出るのは避けたい。
+    robots.txt では止めないこと。止めるとクローラがこの noindex を読めなくなり、
+    他所からのリンク経由でかえって載ることがある。読ませた上で「載せるな」と言う。
+  -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
   <title>特定商取引法に基づく表記 - CotzCotz（コツコツ）</title>
   <style>
     :root{--primary:#FF8FA3;--text:#333;--bg:#FFFDF8;--card:#FFFFFF}
@@ -29,12 +36,12 @@
 
     <table>
       <tr><th>販売事業者</th><td>RHYTHMAP（屋号）</td></tr>
-      <tr><th>運営統括責任者</th><td><span class="fill">〔氏名（本名）〕</span></td></tr>
+      <tr><th>運営統括責任者</th><td>石村 悠二</td></tr>
       <tr><th>所在地</th><td>ご請求があり次第、遅滞なく開示いたします。</td></tr>
       <tr><th>電話番号</th><td>ご請求があり次第、遅滞なく開示いたします。<br>
         <span style="font-size:14px;color:#8A8378">お問い合わせは、下記のメールアドレスにて承ります。通常2〜3日以内に返信します。</span></td></tr>
       <tr><th>メールアドレス</th><td><a href="mailto:rhythmap.net@gmail.com">rhythmap.net@gmail.com</a></td></tr>
-      <tr><th>受付時間</th><td><span class="fill">〔 平日 10:00〜18:00 〕</span>（土日祝・年末年始を除く）</td></tr>
+      <tr><th>受付時間</th><td>土日 10:00〜18:00（年末年始を除く）</td></tr>
       <tr><th>販売URL</th><td>アプリ「CotzCotz（コツコツ）」内のアプリ内購入</td></tr>
       <tr><th>販売価格</th><td>各商品の購入手続きの画面に表示します（消費税込）。</td></tr>
       <tr><th>商品代金以外の必要料金</th><td>通信料は利用者のご負担となります。</td></tr>
@@ -44,7 +51,7 @@
       <tr><th>返品・キャンセル</th><td>デジタルコンテンツの性質上、購入後の返品・キャンセルはお受けできません。<br>
         法令により認められる場合、および各プラットフォーム（Apple / Google）の返金規定による場合を除きます。<br>
         返金の手続きは各プラットフォームの定めによります。</td></tr>
-      <tr><th>動作環境</th><td>iOS <span class="fill">〔 16 〕</span> 以降 ／ Android <span class="fill">〔 10 〕</span> 以降</td></tr>
+      <tr><th>動作環境</th><td>iOS 16.4 以降 ／ Android 7.0 以降</td></tr>
       <tr><th>未成年者のご購入</th><td>未成年の方は、あらかじめ保護者（法定代理人）の同意を得たうえでご購入ください。<br>
         保護者の方は、各プラットフォームの「承認と購入のリクエスト」等から購入の制限・承認を行えます。</td></tr>
     </table>
