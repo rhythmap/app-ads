@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>RHYTHMAP アカウント</title>
+  <!--
+    ============================================================
+      Firebase Authentication の「操作 URL（Action URL）」の差し替え先。
+      Firebase コンソール → Authentication → テンプレート → 操作 URL に
+      このページの URL を設定する。
+
+      ★ なぜ自前で持つか（2026-08-23）
+        既定は https://<project>.firebaseapp.com/__/auth/action で、
+        `lang=ja` を付けても**英語で表示された**（実機で確認）。文言も見た目も
+        変えられず、見慣れないドメインに飛ぶのでユーザーには不審に見える。
+
+      ★ このページは **RHYTHMAP の3アプリ共通**（案A・ユーザー判断）。
+        操作 URL は **Firebase プロジェクト全体**に効くため、CotzCotz だけでなく
+        おはようペット・宝物メソッドのメールもここに来る。
+        **アプリ名やロゴを出さないこと。** 「RHYTHMAP アカウント」で統一する。
+        完了後は URL の continueUrl（各アプリの done.html）へ戻す。
+
+      ★ 外部スクリプトを読まない。Identity Toolkit の REST を直接叩く。
+        apiKey は Firebase がリンクに付けてくる（公開情報）。
+    ============================================================
+  -->
+  <style>
+    :root{--primary:#FF8FA3;--text:#333;--bg:#FFFDF8;--card:#FFFFFF}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;line-height:1.7;color:var(--text);background:var(--bg);margin:0;padding:20px}
+    .container{max-width:520px;margin:0 auto;background:var(--card);padding:32px 28px;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+    h1{color:var(--primary);text-align:center;font-size:1.35rem;border-bottom:2px solid var(--primary);padding-bottom:12px;margin:0 0 20px}
+    p{font-size:16px;color:#555}
+    .brand{text-align:center;font-size:13px;color:#888;margin:0 0 18px;letter-spacing:.08em}
+    label{display:block;font-size:14px;color:#666;margin:18px 0 6px;font-weight:600}
+    input[type=password]{width:100%;box-sizing:border-box;font-size:16px;padding:12px 14px;border:1px solid #E5E1DA;border-radius:10px;background:#fff}
+    input[type=password]:focus{outline:none;border-color:var(--primary)}
+    button{width:100%;font-size:16px;font-weight:700;color:#fff;background:var(--primary);border:0;border-radius:12px;padding:14px;margin-top:20px;cursor:pointer}
+    button:disabled{opacity:.5;cursor:default}
+    .link{display:block;text-align:center;margin-top:22px;font-size:15px;color:var(--primary);text-decoration:none}
+    .link:hover{text-decoration:underline}
+    .box{background:#FFF1F4;border-left:4px solid var(--primary);padding:14px 16px;margin:18px 0;border-radius:6px;font-size:15px}
+    .err{background:#FFF4F4;border-left:4px solid #E5534B;color:#B3261E}
+    .muted{color:#888;font-size:14px}
+    .center{text-align:center}
+    .hide{display:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p class="brand">RHYTHMAP アカウント</p>
+    <h1 id="title">確認しています…</h1>
+    <div id="body"><p class="center muted">少しお待ちください。</p></div>
+  </div>
+
+<script>
+(function () {
+  'use strict';
+  var API = 'https://identitytoolkit.googleapis.com/v1/accounts:';
+  var q = new URLSearchParams(location.search);
+  var mode = q.get('mode') || '';
+  var oob = q.get('oobCode') || '';
+  var key = q.get('apiKey') || '';
+  var cont = q.get('continueUrl') || '';
+
+  var titleEl = document.getElementById('title');
+  var bodyEl = document.getElementById('body');
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
+  function show(title, html) { titleEl.textContent = title; bodyEl.innerHTML = html; }
+  function fail(title, msg) { show(title, '<div class="box err">' + esc(msg) + '</div>' + backLink()); }
+
+  // ★ continueUrl は各アプリの done.html。外部サイトへ飛ばさないよう host を検査する。
+  function safeCont() {
+    if (!cont) return '';
+    try {
+      var u = new URL(cont);
+      if (u.protocol !== 'https:') return '';
+      if (u.hostname !== 'www.rhythmap.net' && u.hostname !== 'rhythmap.net') return '';
+      return u.href;
+    } catch (e) { return ''; }
+  }
+  function backLink(label) {
+    var c = safeCont();
+    if (!c) return '';
+    return '<a class="link" href="' + esc(c) + '">' + esc(label || 'つづける') + '</a>';
+  }
+
+  function post(path, payload) {
+    return fetch(API + path + '?key=' + encodeURIComponent(key), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().then(function (j) {
+        if (!r.ok) {
+          var m = (j && j.error && j.error.message) || 'UNKNOWN';
+          throw new Error(m);
+        }
+        return j;
+      });
+    });
+  }
+
+  // Identity Toolkit のエラーコードを日本語にする。
+  function jaError(code) {
+    if (/EXPIRED_OOB_CODE/.test(code)) return 'このリンクは有効期限が切れています。アプリからもう一度お手続きをやり直してください。';
+    if (/INVALID_OOB_CODE/.test(code)) return 'このリンクは無効です。すでに使用済みか、URL が途中で切れている可能性があります。アプリからもう一度お手続きをやり直してください。';
+    if (/USER_DISABLED/.test(code)) return 'このアカウントは現在ご利用いただけません。お問い合わせください。';
+    if (/EMAIL_EXISTS/.test(code)) return 'このメールアドレスは、すでに別のアカウントで使われています。';
+    if (/WEAK_PASSWORD/.test(code)) return 'パスワードが短すぎます。6文字以上にしてください。';
+    if (/API_KEY|CREDENTIAL/.test(code)) return 'リンクの情報が不足しています。メール本文の URL をすべてコピーして開き直してください。';
+    return '処理できませんでした。時間をおいて、もう一度お試しください。（' + code + '）';
+  }
+
+  if (!oob || !key) {
+    fail('リンクが正しくありません', 'メール本文の URL をすべてコピーして開き直してください。折り返しで途中までしか開かれていないことがあります。');
+    return;
+  }
+
+  // ---- メールアドレスの確認 / メールアドレス変更の取り消し ------------------
+  if (mode === 'verifyEmail' || mode === 'recoverEmail' || mode === 'verifyAndChangeEmail') {
+    titleEl.textContent = mode === 'recoverEmail' ? 'メールアドレスを戻しています…' : 'メールアドレスを確認しています…';
+    post('update', { oobCode: oob }).then(function (res) {
+      if (mode === 'recoverEmail') {
+        show('メールアドレスを元に戻しました',
+          '<p>' + (res.email ? esc(res.email) + ' に戻しました。' : '元のメールアドレスに戻しました。') + '</p>' +
+          '<p class="muted">心当たりがない場合は、パスワードの変更をおすすめします。</p>' + backLink());
+      } else {
+        show('確認できました',
+          '<p>メールアドレスの確認が完了しました。アプリに戻ってお使いください。</p>' + backLink());
+      }
+    }).catch(function (e) { fail('確認できませんでした', jaError(e.message)); });
+    return;
+  }
+
+  // ---- パスワードの再設定 ---------------------------------------------------
+  if (mode === 'resetPassword') {
+    titleEl.textContent = '確認しています…';
+    post('resetPassword', { oobCode: oob }).then(function (res) {
+      var mail = res && res.email ? res.email : '';
+      show('新しいパスワードを決めてください',
+        (mail ? '<p class="muted center">' + esc(mail) + '</p>' : '') +
+        '<label for="p1">新しいパスワード（6文字以上）</label>' +
+        '<input id="p1" type="password" autocomplete="new-password" inputmode="text">' +
+        '<label for="p2">もう一度入力</label>' +
+        '<input id="p2" type="password" autocomplete="new-password" inputmode="text">' +
+        '<div id="msg" class="box err hide"></div>' +
+        '<button id="go" type="button">パスワードを変更する</button>');
+
+      var p1 = document.getElementById('p1');
+      var p2 = document.getElementById('p2');
+      var go = document.getElementById('go');
+      var msg = document.getElementById('msg');
+      function warn(t) { msg.textContent = t; msg.classList.remove('hide'); }
+
+      go.addEventListener('click', function () {
+        msg.classList.add('hide');
+        var a = p1.value, b = p2.value;
+        if (a.length < 6) { warn('パスワードは6文字以上にしてください。'); return; }
+        if (a !== b) { warn('2つの入力が一致しません。'); return; }
+        go.disabled = true; go.textContent = '変更しています…';
+        post('resetPassword', { oobCode: oob, newPassword: a }).then(function () {
+          show('パスワードを変更しました',
+            '<p>新しいパスワードでサインインできます。アプリに戻ってお使いください。</p>' + backLink());
+        }).catch(function (e) {
+          go.disabled = false; go.textContent = 'パスワードを変更する';
+          warn(jaError(e.message));
+        });
+      });
+      p2.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') go.click(); });
+    }).catch(function (e) { fail('お手続きできませんでした', jaError(e.message)); });
+    return;
+  }
+
+  fail('お手続きできませんでした', 'このリンクには対応していません。アプリからもう一度お手続きをやり直してください。');
+})();
+</script>
+</body>
+</html>
