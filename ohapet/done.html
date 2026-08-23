@@ -26,6 +26,10 @@
   .footer{margin-top:28px;padding-top:18px;border-top:1px solid #F1E7E0;font-size:12.5px;
     color:var(--sub);line-height:1.9}
   a{color:#E5795A;text-decoration:none}a:hover{text-decoration:underline}
+  .open{display:block;margin:22px 0 0;padding:15px 18px;border-radius:16px;background:var(--primary);
+    color:#fff;font-size:16px;font-weight:700;text-decoration:none;text-align:center}
+  .open:hover{text-decoration:none;opacity:.92}
+  .openHint{font-size:13px;color:var(--sub);margin:10px 0 0}
   b{font-weight:700}
 </style>
 </head>
@@ -41,6 +45,8 @@
       </div>
       <h1 id="h1"></h1>
       <p class="lead" id="lead"></p>
+      <a class="open" id="openApp" href="ohapet:///"></a>
+      <p class="openHint" id="openHint"></p>
       <ol class="steps" id="steps"></ol>
       <p class="sub" id="sub"></p>
       <div class="footer">
@@ -58,51 +64,59 @@
 var T = {
   ja: { app:'おはようペット',
     h1:'メールアドレスの確認が<br>完了しました',
-    lead:'ありがとうございます。<br>このページを閉じて、<b>おはようペット</b> に戻ってください。',
+    lead:'ありがとうございます。<br><b>おはようペット</b> に戻って、そのままお使いください。',
     steps:['この画面を閉じます','おはようペット を開きます','アカウント画面のお知らせが消えていれば完了です'],
     sub:'お知らせがまだ出ている場合は、アプリを一度閉じてから開き直してください。それでも消えないときは、アカウント画面の「確認メールを再送」からもう一度お試しいただけます。',
+    open:'おはようペット を開く', openHint:'ボタンで開かないときは、下の手順でお戻りください。',
     lp:'アプリの紹介ページ', mail:'お問い合わせ' },
   en: { app:'OhaPet',
     h1:'Your email address<br>has been verified',
-    lead:'Thank you.<br>You can close this page and return to <b>OhaPet</b>.',
+    lead:'Thank you.<br>Return to <b>OhaPet</b> and carry on as usual.',
     steps:['Close this page','Open OhaPet','The notice on the Account screen should be gone'],
     sub:'If the notice is still showing, close the app completely and open it again. If it still does not clear, tap “Resend verification email” on the Account screen.',
+    open:'Open OhaPet', openHint:'If the button does not work, follow the steps below.',
     lp:'About the app', mail:'Contact us' },
   de: { app:'OhaPet',
     h1:'Ihre E-Mail-Adresse<br>wurde bestätigt',
-    lead:'Vielen Dank.<br>Sie können diese Seite schließen und zu <b>OhaPet</b> zurückkehren.',
+    lead:'Vielen Dank.<br>Kehren Sie zu <b>OhaPet</b> zurück und nutzen Sie die App wie gewohnt.',
     steps:['Diese Seite schließen','OhaPet öffnen','Der Hinweis im Kontobereich sollte verschwunden sein'],
     sub:'Wird der Hinweis weiterhin angezeigt, schließen Sie die App vollständig und öffnen Sie sie erneut. Hilft das nicht, tippen Sie im Kontobereich auf „Bestätigungs-E-Mail erneut senden“.',
+    open:'OhaPet öffnen', openHint:'Falls die Schaltfläche nicht funktioniert, folgen Sie den Schritten unten.',
     lp:'Über die App', mail:'Kontakt' },
   es: { app:'OhaPet',
     h1:'Tu correo electrónico<br>ha sido verificado',
-    lead:'Gracias.<br>Puedes cerrar esta página y volver a <b>OhaPet</b>.',
+    lead:'Gracias.<br>Vuelve a <b>OhaPet</b> y continúa usándola como siempre.',
     steps:['Cierra esta página','Abre OhaPet','El aviso de la pantalla de cuenta debería haber desaparecido'],
     sub:'Si el aviso sigue apareciendo, cierra la aplicación por completo y vuelve a abrirla. Si aun así no desaparece, pulsa «Reenviar correo de verificación» en la pantalla de cuenta.',
+    open:'Abrir OhaPet', openHint:'Si el botón no funciona, sigue los pasos de abajo.',
     lp:'Sobre la app', mail:'Contacto' },
   fr: { app:'OhaMoko',
     h1:'Votre adresse e-mail<br>a été vérifiée',
-    lead:'Merci.<br>Vous pouvez fermer cette page et revenir à <b>OhaMoko</b>.',
+    lead:'Merci.<br>Revenez dans <b>OhaMoko</b> et continuez comme d’habitude.',
     steps:['Fermez cette page','Ouvrez OhaMoko','Le message sur l’écran Compte devrait avoir disparu'],
     sub:'Si le message est toujours affiché, fermez complètement l’application puis rouvrez-la. Si cela ne suffit pas, appuyez sur « Renvoyer l’e-mail de vérification » dans l’écran Compte.',
+    open:'Ouvrir OhaMoko', openHint:'Si le bouton ne fonctionne pas, suivez les étapes ci-dessous.',
     lp:'À propos de l’app', mail:'Nous contacter' },
   ko: { app:'OhaPet',
     h1:'이메일 주소 확인이<br>완료되었습니다',
-    lead:'감사합니다.<br>이 페이지를 닫고 <b>OhaPet</b> 으로 돌아가 주세요.',
+    lead:'감사합니다.<br><b>OhaPet</b> 으로 돌아가 그대로 사용해 주세요.',
     steps:['이 화면을 닫습니다','OhaPet 을 엽니다','계정 화면의 안내가 사라졌으면 완료입니다'],
     sub:'안내가 계속 표시되면 앱을 완전히 종료했다가 다시 열어 주세요. 그래도 사라지지 않으면 계정 화면의 「확인 메일 재전송」을 눌러 주세요.',
+    open:'OhaPet 열기', openHint:'버튼으로 열리지 않으면 아래 순서대로 진행해 주세요.',
     lp:'앱 소개', mail:'문의하기' },
   zh: { app:'早安萌宠',
     h1:'邮箱地址验证完成',
-    lead:'感谢您的确认。<br>请关闭此页面，返回 <b>早安萌宠</b>。',
+    lead:'感谢您的确认。<br>请返回 <b>早安萌宠</b> 继续使用。',
     steps:['关闭此页面','打开早安萌宠','账户页面的提示消失即表示完成'],
     sub:'如果提示仍然显示，请先完全关闭应用再重新打开。若仍未消失，可在账户页面点击「重新发送验证邮件」。',
+    open:'打开早安萌宠', openHint:'如果按钮无法打开，请按下面的步骤操作。',
     lp:'应用介绍', mail:'联系我们' },
   'zh-TW': { app:'OhaPet',
     h1:'電子郵件地址<br>驗證完成',
-    lead:'感謝您的確認。<br>請關閉此頁面，返回 <b>OhaPet</b>。',
+    lead:'感謝您的確認。<br>請返回 <b>OhaPet</b> 繼續使用。',
     steps:['關閉此頁面','開啟 OhaPet','帳戶頁面的提示消失即表示完成'],
     sub:'若提示仍然顯示，請先完全關閉應用程式再重新開啟。若仍未消失，可在帳戶頁面點選「重新傳送驗證郵件」。',
+    open:'開啟 OhaPet', openHint:'若按鈕無法開啟，請依照下面的步驟操作。',
     lp:'應用程式介紹', mail:'聯絡我們' }
 };
 
@@ -136,6 +150,39 @@ document.getElementById('sub').textContent = t.sub;
 document.getElementById('brand').textContent = t.app + ' — RHYTHMAP';
 document.getElementById('lpLink').textContent = t.lp;
 document.getElementById('mailLink').textContent = t.mail;
+
+/* 「アプリを開く」ボタン（2026-08-23 追加）。
+   ふだんはメールのリンクがそのままアプリを開くので、このページ自体が出ない。
+   ここに来るのは、リンクがブラウザで開かれたときの受け皿。
+
+   ・Android … intent: を使う。Chrome がアプリを開き、入っていなければ
+                browser_fallback_url（Google Play）へ自動で逃がす。エラー画面を出さない。
+   ・iOS ……… ohapet:/// を、ユーザーが押したリンクとして開く（スラッシュ3本。パスを
+                '/' にしないと go_router がどのルートにも当てられない）。JS の location
+                代入は Safari に止められることがあるので <a> のままにする。
+   ・パソコン … アプリを開けないのでボタンを消し、下の手順だけを見せる。
+   スキームは ios/Runner/Info.plist の CFBundleURLTypes と
+   android/app/src/main/AndroidManifest.xml の intent-filter に登録済み。
+   パスが空の URI（Android の ohapet://open）は
+   lib/core/router/app_router.dart の redirect がホームへ寄せる。 */
+(function () {
+  var a = document.getElementById('openApp');
+  var hint = document.getElementById('openHint');
+  if (!a) return;
+  a.textContent = t.open;
+  if (hint) hint.textContent = t.openHint;
+  var ua = navigator.userAgent || '';
+  if (/Android/i.test(ua)) {
+    a.href = 'intent://open#Intent;scheme=ohapet;package=com.rhythmap.ohapet;'
+      + 'S.browser_fallback_url='
+      + encodeURIComponent('https://play.google.com/store/apps/details?id=com.rhythmap.ohapet')
+      + ';end';
+  } else if (!/iPhone|iPad|iPod/i.test(ua)) {
+    a.style.display = 'none';
+    if (hint) hint.style.display = 'none';
+  }
+})();
+
 </script>
 </body>
 </html>
