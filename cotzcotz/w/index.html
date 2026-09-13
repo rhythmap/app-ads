@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>見守りのおねがい｜CotzCotz（コツコツ）</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{--primary:#FF8FA3;--mint:#06D6A0;--partner:#4EA8DE;--text:#4A4A4A;--sub:#8E8B85;--bg:#FFFDF8;--card:#FFFFFF}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);-webkit-text-size-adjust:100%;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif}
+  .wrap{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:100%;max-width:460px;background:var(--card);border-radius:18px;padding:34px 26px 24px;
+    text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+  .badge{width:84px;height:84px;margin:0 auto 18px;border-radius:26px;background:#FFF0F3;
+    display:flex;align-items:center;justify-content:center;font-size:40px}
+  h1{font-size:20px;line-height:1.5;margin:0 0 10px}
+  p{font-size:15px;line-height:1.85;margin:0;color:#555}
+  .open{display:block;margin:22px 0 0;padding:15px 18px;border-radius:14px;background:var(--mint);
+    color:#fff;font-size:16px;font-weight:700;text-decoration:none}
+  .open:hover{opacity:.92}
+  .sub{font-size:13.5px;color:var(--sub);line-height:1.85;margin-top:18px}
+  .stores{display:flex;gap:10px;margin-top:10px}
+  .store{flex:1;padding:13px 8px;border-radius:12px;background:#4A4A4A;color:#fff;font-size:13.5px;
+    font-weight:700;text-decoration:none}
+  .store:hover{opacity:.92}
+  .footer{margin-top:26px;padding-top:16px;border-top:1px solid #eee;font-size:12.5px;color:#999;line-height:1.9}
+  a{color:var(--primary);text-decoration:none}
+  .bad{display:none;background:#FFF3F5;border-radius:12px;padding:14px;margin-top:18px;font-size:14px;color:#b4405a}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <div class="badge" aria-hidden="true">🤝</div>
+      <h1>見守りのおねがい</h1>
+      <p>CotzCotz（コツコツ）で、目標カードを<br>見守ってあげてください。</p>
+
+      <a class="open" id="openApp" href="#">アプリで開く</a>
+      <p class="sub" id="hint">アプリが開いたら、誰の・どのカードを見守るのかが出ます。<br>そこで決められます。</p>
+
+      <div id="noToken" class="bad">この URL には見守りの情報が入っていません。相手にもう一度 QR を表示してもらってください。</div>
+
+      <p class="sub">アプリが入っていない場合は、先にインストールしてください。<br>入れたあと、もう一度この QR を読み取ります。</p>
+      <div class="stores">
+        <a class="store" href="https://apps.apple.com/jp/app/id6784890132">App Store</a>
+        <a class="store" href="https://play.google.com/store/apps/details?id=com.rhythmap.cotzcotz">Google Play</a>
+      </div>
+
+      <div class="footer">
+        CotzCotz（コツコツ）— コツコツ、わたしを積み上げる<br>
+        <a href="/cotzcotz/lp/">アプリの紹介ページ</a> ・
+        <a href="mailto:rhythmap.net@gmail.com">お問い合わせ</a>
+      </div>
+    </main>
+  </div>
+<script>
+/* QR（見守りのおねがい）の受け皿。2026-09-13 新設。
+
+   ★ QR を出すのは**見守ってほしい人**。読むのは**見守ってくれる人**。
+     ふつうのカメラで読めるように、QR の中身はこの https の URL にしてある。
+     `?t=` に入っているのは10分で切れる合言葉で、コードそのものは入っていない。
+
+   ★ 読んだだけではつながらない。アプリ側で「誰の・どのカードか」を見せて、
+     「見守る」を押すと**申し出**が飛ぶ。つながるのは持ち主が承認したあと。
+
+   ・Android … intent: で開く。入っていなければ Google Play へ自動で逃がす。
+   ・iOS ……… cotzcotz:// を、ユーザーが押したリンクとして開く
+                （JS の location 代入は Safari に止められることがあるので <a> のまま）。
+   ・パソコン … 開けないのでボタンを消す。 */
+(function () {
+  var t = new URLSearchParams(location.search).get('t') || '';
+  var a = document.getElementById('openApp');
+  var hint = document.getElementById('hint');
+  if (!t) {
+    document.getElementById('noToken').style.display = 'block';
+    a.style.display = 'none'; hint.style.display = 'none';
+    return;
+  }
+  var ua = navigator.userAgent || '';
+  var deep = 'cotzcotz://w/' + encodeURIComponent(t);
+  if (/Android/i.test(ua)) {
+    a.href = 'intent://w/' + encodeURIComponent(t) + '#Intent;scheme=cotzcotz;package=com.rhythmap.cotzcotz;'
+      + 'S.browser_fallback_url='
+      + encodeURIComponent('https://play.google.com/store/apps/details?id=com.rhythmap.cotzcotz')
+      + ';end';
+  } else if (/iPhone|iPad|iPod/i.test(ua)) {
+    a.href = deep;
+  } else {
+    a.style.display = 'none';
+    hint.textContent = 'スマートフォンで QR を読み取ってください。';
+  }
+})();
+</script>
+</body>
+</html>
